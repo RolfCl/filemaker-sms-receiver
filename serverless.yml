@@ -1,0 +1,21 @@
+service: sms-receiver
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  sms_receiver:
+    handler: handler.sms_receiver
+    events:
+      - http:
+          path: sms/receive
+          method: post
+          cors: true
+    environment:
+      DATABASE: ${file(./secrets.json):database}
+      LAYOUT: ${file(./secrets.json):layout}
+      ACCOUNT: ${file(./secrets.json):account}
+      PASSWORD: ${file(./secrets.json):password}
